@@ -43,7 +43,11 @@ export default {
                     };
                 this.pokemons.push(pokemon);
                 this.pokemons.push(pokemon);
-            }).then(() => this.randomOrder());
+            }).then(() => {
+                this.randomOrder();
+                this.pokemons = this.pokemons.reverse()
+                this.randomOrder();
+            });
         }
     },
     randomOrder(){
