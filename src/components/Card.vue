@@ -1,9 +1,16 @@
 <template>
   <div class="card">
     <div class="front">
-      <img :src="pokemon.sprite" :alt="pokemon.name" width="100%" height="100%" />
+      <img
+        :src="pokemon.sprite"
+        :alt="pokemon.name"
+        width="100%"
+        height="100%"
+      />
     </div>
-    <div class="back">BackCard</div>
+    <div class="back">
+        <div class="pokeball"></div>
+    </div>
   </div>
 </template>
 

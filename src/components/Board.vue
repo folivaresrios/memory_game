@@ -12,7 +12,7 @@
 
 <script>
 import Card from "./Card";
-import axios from "axios";
+import PokemonService from "../services/PokemonService"
 
 export default {
   name: "Board",
@@ -44,8 +44,8 @@ export default {
     },
     async getPokemon(number) {
       for (var i = number; i < number + Math.pow(this.maxCards, 2) / 2; i++) {
-        axios
-          .get(`https://pokeapi.co/api/v2/pokemon/${i}`)
+        PokemonService
+          .get(`/pokemon/${i}`)
           .then((response) => {
             let pokemon = {
               id: response.data.id,
@@ -76,6 +76,7 @@ export default {
 
       if (this.lockBoard) return;
       if (clickedCard.id === this.firstCard.id) return;
+      console.log(event.target.parentElement, event.target.currentElement)
       this.firstElement = event.target.parentElement;
       event.target.parentElement.classList.add("flip");
 
