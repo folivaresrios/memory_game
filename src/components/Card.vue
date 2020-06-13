@@ -34,6 +34,7 @@ export default {
       if (this.pokemon.id === this.firstCard.id && this.pokemon.componentMatch === this.firstCard.componentMatch) return;
 
       this.$el.classList.add('flip');
+      this.$el.children[1].children[0].style.display = "none";
 
       if (!this.hasFlippedCard) {
         // first click

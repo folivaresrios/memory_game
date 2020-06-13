@@ -38,18 +38,13 @@ export default {
     notMatched(pokemonIds) {
       pokemonIds.forEach((pokemon) => {
         this.$el.querySelector(`[data-component='${pokemon}']`).classList.remove('flip');
+        setTimeout(() => {
+        this.$el.querySelector(`[data-component='${pokemon}']`).children[1].children[0].style.display = "block";
+      }, 250);
       });
       if(this.isMatched) {
         this.flip = false;
       }
-    },
-    findObjectByKey(array, key, value) {
-      for (var i = 0; i < array.length; i++) {
-          if (array[i][key] === value) {
-              return array[i];
-          }
-      }
-      return null;
     },
     ...mapActions([ 'getPokemons']),
   },
