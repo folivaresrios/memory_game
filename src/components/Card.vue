@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" v-on.native="!isMatch ? { click: () => flipCard() } : {}">
     <div class="front">
       <img
         :src="pokemon.sprite"
@@ -15,29 +15,58 @@
 </template>
 
 <script>
+import { mapState,  mapActions } from 'vuex';
+
 export default {
   name: "Card",
   props: ["pokemon"],
+  data() {
+    return {
+      isMatch: false
+    };
+  },
+  computed: {
+    ...mapState(['firstCard', 'secondCard', 'isLockBoard', 'hasFlippedCard', 'isMatched']),
+  },
   methods: {
-    //   flipCard(index) {
-    //   console.log(
-    //     event.target.parentElement.parentElement,
-    //     this.$refs[`cards-${index}`][0]._props.pokemon
-    //   );
-    //   const clickedCard = this.$refs[`cards-${index}`][0]._props.pokemon;
-    //   if (this.lockBoard) return;
-    //   if (clickedCard === this.firstCard) return;
-    //   event.target.parentElement.parentElement.classList.add("flip");
-    //   if (!this.hasFlippedCard) {
-    //     // first click
-    //     this.hasFlippedCard = true;
-    //     this.firstCard = clickedCard;
-    //     return;
-    //   }
-    //   // second click
-    //   this.secondCard = clickedCard;
-    //   this.checkForMatch();
-    // },
+    flipCard() {
+      if (this.isLockBoard) return;
+      if (this.pokemon.id === this.firstCard.id && this.pokemon.componentMatch === this.firstCard.componentMatch) return;
+
+      this.$el.classList.add('flip');
+
+      if (!this.hasFlippedCard) {
+        // first click
+        this.setFlippedCard(true);
+        this.setFirstCard(this.pokemon);
+        return;
+      }
+      // second click
+      this.setSecondCard(this.pokemon);
+      this.checkForMatch();
+    },
+    checkForMatch() {
+      let match = this.firstCard.id === this.secondCard.id;
+      match ? this.disableCard() : this.unflipCards();
+    },
+    disableCard() {
+      this.isMatch = true;
+      this.setMatchedCard(true);
+      this.resetBoard();
+    },
+    resetBoard() {
+      this.unlockBoard();
+      this.setFlippedCard(false);
+      this.resetCards();
+    },
+    unflipCards() {
+      this.lockBoard();
+      setTimeout(() => {
+        this.$emit('not-matched', [this.firstCard.componentMatch, this.secondCard.componentMatch]);
+        this.resetBoard();
+      }, 1000);
+    },
+    ...mapActions(['lockBoard', 'unlockBoard','setFlippedCard', 'setFirstCard', 'setSecondCard',  'resetCards', 'setMatchedCard']),
   },
 };
 </script>
