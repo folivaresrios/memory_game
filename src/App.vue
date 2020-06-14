@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="title">Memory Game, PokeApi.co</div>
     <Board />
   </div>
 </template>
